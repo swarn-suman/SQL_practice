@@ -7,4 +7,3 @@ WHERE id NOT IN (
         GROUP BY email
     ) AS temp
 );
-
