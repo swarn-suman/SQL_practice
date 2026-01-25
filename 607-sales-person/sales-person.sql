@@ -9,4 +9,3 @@ WHERE sales_id NOT IN (
     WHERE C.name = 'RED'
 );
 
-
