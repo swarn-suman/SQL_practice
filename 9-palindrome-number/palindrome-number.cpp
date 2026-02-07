@@ -1,24 +1,31 @@
 class Solution {
 public:
-    int reverse(int x){
-        if(x > 0 && x < 10){
-            return x;
-        }
+    long long reverse_number (long long n){
+        long long reverse = 0;
 
-        long long reversed = 0;
-        while(x > 0){
-            int digit = x % 10;
-            reversed = 10 * reversed + digit;
-            x = x/10;
+        while(n > 0){
+            int digit = n % 10;
+            reverse = reverse * 10 + digit;
+            n = n/10;
         }
-        return reversed;
+        return reverse;
     }
 
     bool isPalindrome(int x) {
-        if(x == reverse(x)){
+        long long n = x;
+
+        if(n == 0){
+            return true;
+        }
+
+        if(n < 0){
+            return false;
+        }
+
+        if(x == reverse_number (n)){
             return true;
         }
         return false;
-        
+
     }
 };
