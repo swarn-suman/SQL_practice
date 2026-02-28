@@ -1,10 +1,10 @@
 # Write your MySQL query statement below
-SELECT D.name AS Department, E.name AS Employee, E.salary AS Salary
-FROM Employee E
-INNER JOIN Department D
-ON E.departmentId = D.id
-WHERE (E.departmentId, E.salary) IN (
-  SELECT departmentId, MAX(salary)
-  FROM Employee
-  GROUP BY departmentId
-);
+SELECT `Department`, `Employee`, Salary
+FROM (
+    SELECT D.name AS `Department`, E.name AS `Employee`, E.salary AS Salary,
+    DENSE_RANK() OVER(PARTITION BY E.departmentId ORDER BY E.salary DESC) AS rnk
+    FROM Employee E
+    JOIN Department D
+    ON E.departmentId = D.id
+)t
+WHERE t.rnk = 1
