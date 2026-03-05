@@ -1,11 +1,19 @@
-SELECT 
-    ROUND(SUM(tiv_2016), 2) AS tiv_2016
-FROM (
-    SELECT 
-        tiv_2016,
-        COUNT(*) OVER (PARTITION BY tiv_2015) AS same_tiv_2015_cnt,
-        COUNT(*) OVER (PARTITION BY lat, lon) AS same_location_cnt
+# Write your MySQL query statement below
+WITH temp1 AS(
+    SELECT tiv_2015
     FROM Insurance
-) t
-WHERE same_tiv_2015_cnt > 1
-  AND same_location_cnt = 1;
+    GROUP BY tiv_2015
+    HAVING COUNT(*) > 1
+),
+
+temp2 AS(
+    SELECT lat, lon
+    FROM Insurance
+    GROUP BY lat,lon
+    HAVING COUNT(*) = 1
+)
+
+SELECT ROUND(SUM(tiv_2016),2) AS `tiv_2016`
+FROM Insurance
+WHERE tiv_2015 IN (SELECT tiv_2015 FROM temp1)
+AND (lat, lon) IN (SELECT lat, lon FROM temp2)
