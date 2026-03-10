@@ -1,8 +1,9 @@
 # Write your MySQL query statement below
 SELECT MAX(num) AS num
 FROM (
-    SELECT num
+    SELECT num 
     FROM MyNumbers
     GROUP BY num
-     HAVING COUNT(num)=1
-) AS singles;
+    HAVING COUNT(*) = 1
+    ORDER BY num DESC
+    LIMIT 1)t
