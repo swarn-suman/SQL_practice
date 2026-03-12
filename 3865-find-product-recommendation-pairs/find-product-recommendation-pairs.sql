@@ -14,9 +14,7 @@ JOIN ProductInfo PI2
     ON P2.product_id = PI2.product_id
 GROUP BY 
     P1.product_id, 
-    P2.product_id, 
-    PI1.category, 
-    PI2.category
+    P2.product_id
 HAVING COUNT(DISTINCT P1.user_id) >= 3
 ORDER BY 
     customer_count DESC,
