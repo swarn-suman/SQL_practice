@@ -1,6 +1,5 @@
 # Write your MySQL query statement below
-SELECT
-    id,
+SELECT id,
     SUM(CASE WHEN month = 'Jan' THEN revenue END) AS Jan_Revenue,
     SUM(CASE WHEN month = 'Feb' THEN revenue END) AS Feb_Revenue,
     SUM(CASE WHEN month = 'Mar' THEN revenue END) AS Mar_Revenue,
