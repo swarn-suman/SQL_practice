@@ -1,13 +1,11 @@
 # Write your MySQL query statement below
-SELECT 
-    ROUND(100 * SUM(CASE 
-    WHEN order_date = customer_pref_delivery_date THEN 1 
-    ELSE 0 
-    END) / COUNT(*),2) AS immediate_percentage
-FROM Delivery d
-JOIN (
-    SELECT customer_id, MIN(order_date) AS first_order_date
+WITH temp1 AS(
+    SELECT *,
+    ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY order_date) AS rnk
     FROM Delivery
-    GROUP BY customer_id
-) f
-ON d.customer_id = f.customer_id AND d.order_date = f.first_order_date;
+)
+
+    SELECT ROUND(COUNT(*) * 100.0 / (SELECT COUNT(DISTINCT customer_id) FROM Delivery),2) AS immediate_percentage
+    FROM temp1 
+    WHERE rnk = 1
+    AND order_date = customer_pref_delivery_date
