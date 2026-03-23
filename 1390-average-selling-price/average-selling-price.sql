@@ -5,4 +5,3 @@ LEFT JOIN UnitsSold U
 ON P.product_id = U.product_id
 AND U.purchase_date BETWEEN P.start_date AND P.end_date
 GROUP BY P.product_id;
-
