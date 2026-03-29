@@ -1,4 +1,4 @@
 # Write your MySQL query statement below
 SELECT *
 FROM Patients
-WHERE conditions REGEXP '(^| )DIAB1'
+WHERE REGEXP_LIKE(conditions, '(^| )DIAB1');
