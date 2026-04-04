@@ -1,10 +1,10 @@
 # Write your MySQL query statement below
-SELECT employee_id, department_id
+WITH temp AS(
+SELECT employee_id, department_id, primary_flag,
+COUNT(*) OVER(PARTITION BY employee_id) AS cnt
 FROM Employee
-WHERE primary_flag = 'Y'
-OR employee_id IN (
-SELECT employee_id
-       FROM Employee
-       GROUP BY employee_id
-       HAVING COUNT(department_id) = 1
-   );
+)
+
+SELECT employee_id, department_id
+FROM temp
+WHERE cnt = 1 OR primary_flag = 'Y'
