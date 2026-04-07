@@ -1,11 +1,12 @@
 # Write your MySQL query statement below
-SELECT user_id, COALESCE(rate,0) confirmation_rate
-FROM (
-SELECT S.user_id, 
-ROUND(SUM(CASE 
-	   WHEN C.action = "confirmed" THEN 1 
-       ELSE 0 END) / COUNT(C.action),2) AS rate
+WITH temp AS(
+    SELECT user_id, COUNT(*) AS cnt, 
+    SUM(CASE WHEN action = 'confirmed' THEN 1 ELSE 0 END) AS confirmed_cnt
+    FROM Confirmations
+    GROUP BY user_id
+)
+
+SELECT S.user_id, COALESCE(ROUND(T.confirmed_cnt/T.cnt,2),0) AS confirmation_rate
 FROM Signups S
-LEFT JOIN Confirmations C
-ON S.user_id = C.user_id
-GROUP BY S.user_id)t;
+LEFT JOIN temp T
+ON S.user_id = T.user_id
